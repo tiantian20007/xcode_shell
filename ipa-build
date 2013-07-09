@@ -165,8 +165,12 @@ appdirname=${build_config}-iphoneos
 compiled_path=${build_path}/${appdirname}
 
 #是否clean
-if [ "$build_config" = "y" ];then
-	xcodebuild clean
+
+
+if [ "$should_clean" = "y" ];then
+	echo "xcode clean"
+	cd $project_path
+	xcodebuild clean -configuration $build_config
 fi
 
 
