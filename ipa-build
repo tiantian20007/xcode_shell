@@ -170,7 +170,7 @@ compiled_path=${build_path}/${appdirname}
 if [ "$should_clean" = "y" ];then
 	echo "xcode clean"
 	cd $project_path
-	xcodebuild clean -configuration $build_config
+	xcodebuild clean -configuration $build_config -target $build_target
 fi
 
 
