@@ -26,15 +26,15 @@
 #须配置内容  start
 
 #sftp参数设置
-sftp_server=192.168.xx.xx
-sftp_username=xx
-sftp_password=xx
-sftp_workpath="/usr/share/xx/xx/xx"
+sftp_server=192.168.1.132
+sftp_username=guest
+sftp_password=leshu
+sftp_workpath="/home/guest/public_html"
 
 
 
 #发布应用的url地址
-pulish_url="http://xx.com/xx"
+pulish_url="http://192.168.1.132/client"
 
 #以下是邮箱的相关设置
 #收件人
@@ -136,8 +136,10 @@ bundleVersion=$(/usr/libexec/PlistBuddy -c "print CFBundleVersion" ${app_infopli
 bundleIdentifier=$(/usr/libexec/PlistBuddy -c "print CFBundleIdentifier" ${app_infoplist_path})
 #取CFBundleName
 target_name=$(/usr/libexec/PlistBuddy -c "print CFBundleName" ${app_infoplist_path})
+echo $target_name
 #取CFBundleDisplayName
 display_name=$(/usr/libexec/PlistBuddy -c "print CFBundleDisplayName" ${app_infoplist_path})
+echo $display_name
 
 #删除临时文件夹
 cd ..
@@ -243,8 +245,13 @@ EOF
 #调用upload脚本来将文件上传到服务器
 ${shell_path}/uploadItemsServicesFiles $target_name ${sftp_server} ${sftp_username} ${sftp_password} ${sftp_workpath} || exit
 
+plistName=${target_name}.plist
+#上传.plist
+${shell_path}/sftpUploadFile ${plistName} ${sftp_server} ${sftp_username} ${sftp_password} ${sftp_workpath}/${target_name} || exit
+
 #切换到tmp目录下
 serverIndexHtmlName=index.html
+
 cd /tmp
 rm ${serverIndexHtmlName}
 #从服务器下载index.html
@@ -253,6 +260,8 @@ ${shell_path}/sftpDownloadFile ${serverIndexHtmlName} ${sftp_server} ${sftp_user
 ${shell_path}/updateLocalIndexHtml ${display_name} ${bundleShortVersion} ${ipa_download_url} ${ios_install_url} || exit
 #上传index.html
 ${shell_path}/sftpUploadFile ${serverIndexHtmlName} ${sftp_server} ${sftp_username} ${sftp_password} ${sftp_workpath} || exit
+
+
 
 
 
