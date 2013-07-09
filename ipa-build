@@ -160,6 +160,7 @@ appdirname=Release-iphoneos
 if [ $build_config = Debug ];then
 	appdirname=Debug-iphoneos
 fi
+appdirname=${build_config}-iphoneos
 #编译后文件路径(仅当编译workspace时才会用到)
 compiled_path=${build_path}/${appdirname}
 
