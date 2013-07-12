@@ -50,11 +50,15 @@ project_path=$(pwd)
 #编译的configuration，默认为Release
 build_config=Release
 
-param_pattern=":nc:o:t:ws:"
+param_pattern=":np:c:o:t:ws:"
 OPTIND=2
 while getopts $param_pattern optname
   do
+	#echo $optname
     case "$optname" in
+	  "p")
+		product_name=$OPTARG
+		;;
 	  "n")        
 		should_clean=y		
         ;;
@@ -152,6 +156,8 @@ while getopts $param_pattern optname
     esac
   done
 
+echo "product name: "$product_name
+
 
 #build文件夹路径
 build_path=${project_path}/build
@@ -213,7 +219,7 @@ mkdir ipa-build
 
 
 #app文件名称
-appname=$(basename ./${appdirname}/*.app)
+appname=$(basename ./${appdirname}/${product_name}.app)
 #通过app文件名获得工程target名字
 target_name=$(echo $appname | awk -F. '{print $1}')
 #app文件中Info.plist文件路径
@@ -222,13 +228,15 @@ app_infoplist_path=${build_path}/${appdirname}/${appname}/Info.plist
 bundleShortVersion=$(/usr/libexec/PlistBuddy -c "print CFBundleShortVersionString" ${app_infoplist_path})
 #取build值
 bundleVersion=$(/usr/libexec/PlistBuddy -c "print CFBundleVersion" ${app_infoplist_path})
+#取bundlename值
+bundleName=$(/usr/libexec/PlistBuddy -c "print CFBundleName" ${app_infoplist_path})
 
 #IPA名称
-ipa_name="${target_name}_${bundleShortVersion}_${build_config}${bundleVersion}_$(date +"%Y%m%d")"
+ipa_name="${bundleName}_${bundleShortVersion}_${build_config}${bundleVersion}_$(date +"%Y%m%d")"
 echo $ipa_name
 
 #xcrun打包
-xcrun -sdk iphoneos PackageApplication -v ./${appdirname}/*.app -o ${build_path}/ipa-build/${ipa_name}.ipa || exit
+xcrun -sdk iphoneos PackageApplication -v ./${appdirname}/${product_name}.app -o ${build_path}/ipa-build/${ipa_name}.ipa || exit
 
 if [ "$output_path" != "" ];then
 	cp ${build_path}/ipa-build/${ipa_name}.ipa $output_path/${ipa_name}.ipa
