@@ -136,10 +136,10 @@ bundleVersion=$(/usr/libexec/PlistBuddy -c "print CFBundleVersion" ${app_infopli
 bundleIdentifier=$(/usr/libexec/PlistBuddy -c "print CFBundleIdentifier" ${app_infoplist_path})
 #取CFBundleName
 target_name=$(/usr/libexec/PlistBuddy -c "print CFBundleName" ${app_infoplist_path})
-echo $target_name
+echo "target_name: "$target_name
 #取CFBundleDisplayName
 display_name=$(/usr/libexec/PlistBuddy -c "print CFBundleDisplayName" ${app_infoplist_path})
-echo $display_name
+echo "display_name: "$display_name
 
 #删除临时文件夹
 cd ..
@@ -153,6 +153,7 @@ ipa_name="${display_name}"
 
 
 if [ -d ./$target_name ];then
+	echo "rm folder "$target_nam
 	rm -rf $target_name
 fi
 mkdir $target_name
