@@ -50,7 +50,7 @@ project_path=$(pwd)
 #编译的configuration，默认为Release
 build_config=Release
 
-param_pattern=":np:c:o:t:ws:"
+param_pattern=":np:d:c:o:t:ws:"
 OPTIND=2
 while getopts $param_pattern optname
   do
@@ -58,6 +58,9 @@ while getopts $param_pattern optname
     case "$optname" in
 	  "p")
 		product_name=$OPTARG
+		;;
+	  "d")
+		product_dir=$OPTARG
 		;;
 	  "n")        
 		should_clean=y		
@@ -157,6 +160,7 @@ while getopts $param_pattern optname
   done
 
 echo "product name: "$product_name
+echo "prodcut dir: "$product_dir
 
 
 #build文件夹路径
@@ -166,7 +170,7 @@ appdirname=Release-iphoneos
 if [ $build_config = Debug ];then
 	appdirname=Debug-iphoneos
 fi
-appdirname=${build_config}-iphoneos
+appdirname=${build_config}-iphoneos/${product_dir}
 #编译后文件路径(仅当编译workspace时才会用到)
 compiled_path=${build_path}/${appdirname}
 
