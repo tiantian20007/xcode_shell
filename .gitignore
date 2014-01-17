@@ -6,3 +6,4 @@ build/
 *.pbxuser
 *.swp
 test
+.svn
