@@ -7,3 +7,6 @@ build/
 *.swp
 test
 .svn
+
+excel/
+data/
