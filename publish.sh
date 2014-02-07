@@ -28,8 +28,11 @@ git pull
 git submodule init
 git submodule update
 cd libs/cocos2d-x/
+git pull
 git submodule init
 git submodule update
+cd scripting/javascript/bindings/generated/
+git pull
 
 # excel to json
 echo start convert excel to json.....................
